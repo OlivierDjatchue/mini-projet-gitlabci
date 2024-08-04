@@ -27,8 +27,7 @@ Pipeline Steps
 # Pipeline Steps
 1)  Build Docker Image
 The pipeline begins with building a Docker image using a Dockerfile. This step ensures that the application is containerized and can run consistently across different environments.
->![image](https://github.com/user-attachments/assets/ceb49a2e-d6e9-43a0-89e9-99a4f03c2e71)
-
+>![image](../images/docker-build.png)
 
 2. Test Docker Image
 After building the image, the pipeline tests it to verify that the application works as expected within the Docker container.
