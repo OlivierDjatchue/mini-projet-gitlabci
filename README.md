@@ -67,7 +67,10 @@ Pipeline Overview
 > ![overview pipeline](https://github.com/user-attachments/assets/22718ab9-7fa8-4181-a715-6fabeb64c8b0)
 
 Docker Image Build
-> ![docker-build](https://github.com/user-attachments/assets/cb7673a3-512b-41d8-a582-d35aa4263e84)
+> ![docker-build](https://github.com/user-attachments/assets/cb7673a3-512b-41d8-a582-d35aa4263e84
+
+Release the image
+> ![release_images](https://github.com/user-attachments/assets/43f069bd-53b0-42d1-af36-6a78ee50d851)
 
 Staging Deployment
 > ![deploy_staging](https://github.com/user-attachments/assets/15461278-278b-4bfb-a0b0-a54ab6ea6506)
@@ -81,6 +84,9 @@ Test Staging Environment
 
 Test production Environment
 > ![test_prod](https://github.com/user-attachments/assets/b94d0a62-2683-4f34-8161-5352feea9182)
+
+App overview on Heroku
+>![app_overview in heroku](https://github.com/user-attachments/assets/e94dde93-08c7-4e90-9b9c-5c9b492c14d8)
 
 Opening the App in the webbrowser
 > ![viewing the app](https://github.com/user-attachments/assets/585771fb-9038-4c1c-8c04-b390d6a02492)
