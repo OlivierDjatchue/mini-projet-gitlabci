@@ -1,0 +1,99 @@
+image: docker:latest
+services:
+  - name: docker:dind
+    alias: docker 
+
+
+stages:
+  - build
+  - Test acceptation
+  - Release image
+  - Deploy staging
+  - Deploy prod
+  - Test staging
+  - Test prod
+  
+.test_template: &test
+  image: alpine
+  only:
+    - master
+  script:
+    - apk --no-cache add curl
+    - curl "http://$DOMAIN" 
+ 
+
+docker-build:
+  # Use the official docker image.
+  stage: build
+  script:
+    - docker build -t  api .
+    - docker save api > api.tar
+  artifacts:
+    paths:
+      - api.tar    
+
+
+test acceptation:
+  # Official docker image.
+  stage: Test acceptation
+  script:
+    - docker load < api.tar
+    - docker run -d -p 80:80 --name webapp api
+    - sleep 5
+   
+
+release image:
+  stage: Release image
+  script:
+    - docker load < api.tar
+    - docker tag api "${IMAGE_NAME}:${CI_COMMIT_REF_NAME}"
+    - docker tag api "${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}"
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+    - docker push "${IMAGE_NAME}:${CI_COMMIT_REF_NAME}"
+    - docker push "${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}"
+
+deploy staging:
+  stage: Deploy staging
+  environment:
+    name: staging
+    url:  https://bana-staging-0763ce7bae86.herokuapp.com/    
+  only:
+    - master
+  script:    
+    - apk --no-cache add npm
+    - npm install -g heroku
+    - heroku container:login
+    - heroku create bana-staging || echo "project already exist"
+    - heroku stack:set container --app bana-staging
+    - heroku container:push -a bana-staging web
+    - heroku container:release -a bana-staging web 
+
+deploy prod:
+  stage: Deploy prod
+  environment:
+    name: prod
+    url: https://olivierdja-prod-5d5cd8ec936c.herokuapp.com/
+  only:
+    - master
+  script:    
+    - apk --no-cache add npm 
+    - npm install -g heroku
+    - heroku container:login
+    - heroku create bana-production || echo "project already exist"
+    - heroku stack:set container --app bana-production
+    - heroku container:push -a bana-production web
+    - heroku container:release -a bana-production web 
+
+test staging:
+  <<: *test 
+  stage: Test staging
+  variables:
+    DOMAIN:  bana-staging-0763ce7bae86.herokuapp.com/
+  
+
+test prod:  
+  <<: *test  
+  stage: Test prod
+  variables: 
+    DOMAIN: olivierdja-prod-5d5cd8ec936c.herokuapp.com/
+
