@@ -8,7 +8,6 @@
 
 
 ## GitLab CI Pipeline for Dockerized Application
-## Overview
 This project demonstrates the setup of a CI/CD pipeline using GitLab CI for a Dockerized application. The pipeline includes building, testing, and deploying the application to Heroku.
 
 # Table of Contents
